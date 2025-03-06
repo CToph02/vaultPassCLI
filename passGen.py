@@ -1,33 +1,46 @@
 import secrets
 import string
 
-def passGen(length, low, up, dig, symb):
+def gen(length, low, up, dig, symb):
     lower = list(string.ascii_lowercase)
     upper = list(string.ascii_uppercase)
     digits = list(string.digits)
-    symbols = list(string.punctuation)
+    symbols = list('!#$%&()*^')
 
-    pwdList = []
-
-    lowRand = [secrets.choice(lower) for _ in range(length//4)]
-    upperRand = [secrets.choice(upper) for _ in range(length//4)]
-    digitsRand = [secrets.choice(digits) for _ in range(length//4)]
-    symbolsRand = [secrets.choice(symbols) for _ in range(length//4)]
+    pwd_list = []
 
     if low:
-        pwdList += lowRand
-        
+        pwd_list.append(secrets.choice(lower))
+
     if up:
-        pwdList += upperRand
+        pwd_list.append(secrets.choice(upper))
         
     if dig:
-        pwdList += digitsRand
+        pwd_list.append(secrets.choice(digits))
         
     if symb:
-        pwdList += symbolsRand
+        pwd_list.append(secrets.choice(symbols))
 
-    secrets.SystemRandom().shuffle(pwdList)
+    remaining_length = length - len(pwd_list)
     
-    pwd = ''.join(secrets.choice(pwdList) for _ in range(length))
+    if remaining_length>0:
+        act_categ = []
 
-    return pwd
+        if low:
+            act_categ.append(lower)
+
+        if up:
+            act_categ.append(upper)
+            
+        if dig:
+            act_categ.append(digits)
+            
+        if symb:
+            act_categ.append(symbols)
+        
+        pwd_list.extend(secrets.choice(secrets.choice(act_categ)) 
+                        for _ in range(remaining_length))
+
+    secrets.SystemRandom().shuffle(pwd_list)
+
+    return ''.join(secrets.choice(pwd_list) for _ in range(length))

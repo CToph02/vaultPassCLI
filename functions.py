@@ -1,5 +1,5 @@
 from datetime import datetime
-import passGen
+from passGen import gen
 import tables
 import crypto
 import json
@@ -153,17 +153,17 @@ class functMain():
 
     def genPwd(self):
         defOrCust = (
-            input("Do you want a custom password? (Yes/no = Default): ").strip().lower()
+            input("Do you want a custom password? (y/n = Default): ").strip().lower()
         )
 
-        if defOrCust == "no" or defOrCust == "":
-            print(f"Your password: {passGen(20, True, False, True, True)}")
+        if defOrCust == "n" or defOrCust == "":
+            print(f"Your password: {gen(20, True, False, True, True)}")
 
-        elif defOrCust == "yes":
+        elif defOrCust == "y":
             try:
                 length = int(input("Lenght: ").strip())
 
-                low = input("Lower case? (y/no = Enter):").strip().lower() == "y"
+                low = input("Lower case? (y/no = Enter): ").strip().lower() == "y"
                 up = input("Upper case? (y/no = Enter): ").strip().lower() == "y"
                 dig = input("Digits? (y/no = Enter): ").strip().lower() == "y"
                 symb = input("Symbols? (y/no = Enter): ").strip().lower() == "y"
@@ -173,7 +173,7 @@ class functMain():
                     return
 
                 else:
-                    print(f"Your password: {passGen(length, low, up, dig, symb)}")
+                    print(f"Your password: {gen(length, low, up, dig, symb)}")
 
             except ValueError:
                 print("Invalid input for length. Please enter a valid integer.")
